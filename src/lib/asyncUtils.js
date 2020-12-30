@@ -13,12 +13,15 @@ export const createPromiseThunk = (type, promiseCreater) => {
   return thunkCreator;
 };
 
-export const handleAsyncActions = (type, key) => {
+export const handleAsyncActions = (type, key, keepData) => {
   const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
   return (state, action) => {
     switch (action.type) {
       case type:
-        return { ...state, [key]: reducerUtils.loading() };
+        return {
+          ...state,
+          [key]: reducerUtils.loading(keepData ? state[key].data : null),
+        };
       case SUCCESS:
         return { ...state, [key]: reducerUtils.success(action.payload) };
       case ERROR:

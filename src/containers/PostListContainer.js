@@ -5,17 +5,16 @@ import { getPosts } from "../modules/posts";
 
 function PostListContainer() {
   const { data, loading, error } = useSelector((state) => state.posts.posts);
-  const dispatch = useDispatch( );
+  const dispatch = useDispatch();
 
   useEffect(() => {
+    
     dispatch(getPosts());
-       
-  }, [dispatch])
+  }, [dispatch,data]);
 
-
-  if(loading) return <div>로딩중...</div>
-  if(error) return <div>에러발생...</div>
-  if(!data) return null;
+  if (loading && !data) return <div>로딩중...</div>;
+  if (error) return <div>에러발생...</div>;
+  if (!data) return null;
 
   return <PostList posts={data}></PostList>;
 }
