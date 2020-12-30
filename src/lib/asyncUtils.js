@@ -1,3 +1,5 @@
+import { call, put } from "redux-saga/effects";
+
 export const createPromiseThunk = (type, promiseCreater) => {
   const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
   const thunkCreator = (param) => async (dispatch) => {
@@ -11,6 +13,25 @@ export const createPromiseThunk = (type, promiseCreater) => {
   };
 
   return thunkCreator;
+};
+
+export const createPromiseSaga = (type, promiseCreater) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
+  return function* saga(action) {
+    try {
+      const result = yield call(promiseCreater, action.payload);
+      yield put({
+        type: SUCCESS,
+        payload: result,
+      });
+    } catch (error) {
+      yield put({
+        type: ERROR,
+        payload: error,
+        error: true,
+      });
+    }
+  };
 };
 
 const defaultIdSelector = (param) => param;
@@ -33,6 +54,29 @@ export const createPromiseThunkById = (
 
   return thunkCreator;
 };
+
+export const createPromiseSagaById = (type, promiseCreater) => {
+  const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
+  return function* saga(action) {
+    const id = action.meta;
+    try {
+      const result = yield call(promiseCreater, action.payload);
+      yield put({
+        type: SUCCESS,
+        payload: result,
+        meta:id,
+      });
+    } catch (error) {
+      yield put({
+        type: ERROR,
+        payload: error,
+        error: true,
+        meta:id,
+      });
+    }
+  };
+};
+
 export const handleAsyncActions = (type, key, keepData) => {
   const [SUCCESS, ERROR] = [`${type}_SUCCESS`, `${type}_ERROR`];
   return (state, action) => {

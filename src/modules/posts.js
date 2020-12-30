@@ -1,6 +1,8 @@
 import { call, put, takeEvery } from "redux-saga/effects";
 import * as postsAPI from "../api/posts";
 import {
+    createPromiseSaga,
+    createPromiseSagaById,
   createPromiseThunk,
   createPromiseThunkById,
   handleAsyncActions,
@@ -29,40 +31,9 @@ export const goToHome = () => (dispatch, getState, { history }) => {
   history.push("/");
 };
 
-function* getPostsSaga() {
-  try {
-    const posts = yield call(postsAPI.getPosts);
-    yield put({
-      type: GET_POSTS_SUCCESS,
-      payload: posts,
-    });
-  } catch (error) {
-    yield put({
-      type: GET_POSTS_ERROR,
-      payload: error,
-      error: true,
-    });
-  }
-}
+const getPostsSaga = createPromiseSaga(GET_POSTS,postsAPI.getPosts);
+const getPostSaga = createPromiseSagaById(GET_POST,postsAPI.getPostById);
 
-function* getPostSaga(action) {
-  const id = action.payload;
-  try {
-    const posts = yield call(postsAPI.getPostById, id);
-    yield put({
-      type: GET_POST_SUCCESS,
-      payload: posts,
-      meta: id,
-    });
-  } catch (error) {
-    yield put({
-      type: GET_POST_ERROR,
-      payload: error,
-      error: true,
-      meta: id,
-    });
-  }
-}
 
 export function* postsSaga(){
     yield takeEvery(GET_POSTS,getPostsSaga);
