@@ -27,3 +27,78 @@ export const getPost = (id) => async (dispatch) => {
     dispatch({ type: GET_POST_ERROR, error });
   }
 };
+
+const initialState = {
+  posts: {
+    loading: false,
+    data: null,
+    error: null,
+  },
+  post: {
+    loading: false,
+    data: null,
+    error: null,
+  },
+};
+
+export default function posts(state = initialState, action) {
+  switch (action.type) {
+    case GET_POSTS:
+      return {
+        ...state,
+        posts: {
+          loading: true,
+          data: null,
+          error: null,
+        },
+      };
+    case GET_POSTS_SUCCESS:
+      return {
+        ...state,
+        posts: {
+          loading: false,
+          data: action.posts,
+          error: null,
+        },
+      };
+    case GET_POSTS_ERROR:
+      return {
+        ...state,
+        posts: {
+          loading: false,
+          data: null,
+          error: action.error,
+        },
+      };
+      case GET_POST:
+        return {
+          ...state,
+          post: {
+            loading: true,
+            data: null,
+            error: null,
+          },
+        };
+      case GET_POST_SUCCESS:
+        return {
+          ...state,
+          post: {
+            loading: false,
+            data: action.posts,
+            error: null,
+          },
+        };
+      case GET_POST_ERROR:
+        return {
+          ...state,
+          post: {
+            loading: false,
+            data: null,
+            error: action.error,
+          },
+        };
+
+    default:
+      return state;
+  }
+}
