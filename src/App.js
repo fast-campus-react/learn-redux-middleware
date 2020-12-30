@@ -1,13 +1,18 @@
 import logo from "./logo.svg";
 import "./App.css";
-import CounterContainer from "./containers/CounterContainer";
+import { Route } from "react-router-dom";
+import PostPage from "./pages/PostPage";
 import PostListContainer from "./containers/PostListContainer";
+
+
+
 
 function App() {
   return (
-    <>
-      <PostListContainer></PostListContainer>
-    </>
+    < >
+       <Route path="/" component={PostListContainer} exact></Route>
+       <Route path="/:id" component={PostPage} ></Route>
+    </ >
   );
 }
 
