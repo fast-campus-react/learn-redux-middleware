@@ -18,7 +18,7 @@ export const handleAsyncActions = (type, key) => {
   return (state, action) => {
     switch (action.type) {
       case type:
-        return { ...state, [key]: reducerUtils.loading };
+        return { ...state, [key]: reducerUtils.loading() };
       case SUCCESS:
         return { ...state, [key]: reducerUtils.success(action.payload) };
       case ERROR:

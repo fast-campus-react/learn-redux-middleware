@@ -34,7 +34,6 @@ export default function posts(state = initialState, action) {
     case GET_POST_SUCCESS:
     case GET_POST_ERROR:
       return getPostReducer(state, action);
-
     default:
       return state;
   }
